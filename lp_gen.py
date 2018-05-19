@@ -14,6 +14,7 @@ STD = "S{}T{}D{}"
 # Format writers
 #==============================================================================#
 def writeAll(file, source, transit, dest):
+    """ Writes entire LP file"""
     writeHeader(file)
     writeConstraints(file, source, transit, dest)
     writeOthers(file, source, transit, dest)
@@ -37,6 +38,7 @@ def writeEnd(file):
 #==============================================================================#
 
 def writeConstraints(file, source, transit, dest):
+    """ Writes all constraints to the given file"""
     writeLoadBalancingConstraints(file, source, transit, dest)
     writeDemandVolConstraints(file, source, transit, dest)
     writeDemandFlowConstraints(file, source, transit, dest)
@@ -136,6 +138,7 @@ def writeBinaryConstraints(file, source, transit, dest):
 #==============================================================================#
 
 def writeOthers(file, source, transit, dest):
+    """ Writes all other LP information to file"""
     file.write("Bounds\n")
     writeFlowBounds(file, source, transit, dest)
     writeSourceBounds(file, source, transit, dest)
@@ -146,6 +149,7 @@ def writeOthers(file, source, transit, dest):
     return
 
 def writeFlowBounds(file, source, transit, dest):
+    """ Writes the flow bounds to given file"""
     line = ""
     for i in range(1, source + 1):
         for j in range(1, dest + 1):
@@ -155,6 +159,7 @@ def writeFlowBounds(file, source, transit, dest):
     return
 
 def writeSourceBounds(file, source, transit, dest):
+    """ Writes the source -> transit capacity bounds to given file"""
     line = ""
     for i in range(1, dest + 1):
         for k in range(1, transit + 1):
@@ -163,6 +168,7 @@ def writeSourceBounds(file, source, transit, dest):
     return
 
 def writeDestBounds(file, source, transit, dest):
+    """ Writes the transit -> dest capacity bounds to given file"""
     line = ""
     for j in range(1, dest + 1):
         for k in range(1, transit + 1):
@@ -171,6 +177,7 @@ def writeDestBounds(file, source, transit, dest):
     return
 
 def writeBinaries(file, source, transit, dest):
+    """ Writes all the binary variables to the given file"""
     line = ""
     for i in range(1, source + 1):
         for j in range(1, dest + 1):
