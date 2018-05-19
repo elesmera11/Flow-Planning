@@ -185,8 +185,9 @@ def writeBinaries(file, source, transit, dest):
 
 if (__name__ == "__main__"):
     
-    f = open("out.lp", 'w')
-    source, transit, dest = 3, 3, 3
-    #source, transit, dest = int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3])
-    writeAll(f, source, transit, dest)
-    f.close()
+    
+    for y in range(3, 8):
+        f = open("out%s.lp" %y, 'w')
+        source, transit, dest = 7, y, 7
+        writeAll(f, source, transit, dest)
+        f.close()
