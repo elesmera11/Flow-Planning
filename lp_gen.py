@@ -8,17 +8,17 @@
 
 import sys
 PATHS = 3 #the number of paths the load must be balanced between
-STD = "S{}T{}D{}"
+STD = "S{}T{}D{}" #Standard format for most nodes - Source #, Transit #, Dest #.
 
 #==============================================================================#
 # Format writers
 #==============================================================================#
+
 def writeAll(file, source, transit, dest):
     """ Writes entire LP file"""
     writeHeader(file)
     writeConstraints(file, source, transit, dest)
-    writeOthers(file, source, transit, dest)
-    writeEnd(file)
+    writeTrailer(file, source, transit, dest)
     return
 
 def writeHeader(file):
@@ -26,11 +26,6 @@ def writeHeader(file):
     file.write("Minimize\n")
     file.write("    r\n")
     file.write("Subject to\n")
-    return
-
-def writeEnd(file):
-    """ Finishes off the given file"""
-    file.write("End")
     return
 
 #==============================================================================#
@@ -52,7 +47,7 @@ def writeLoadBalancingConstraints(file, source, transit, dest):
         This auxilliary variable r is what we are minimising. """
     line = ""
     for k in range(1, transit + 1):
-        line += "    r{}: ".format(k)
+        line += "    rT{}: ".format(k)
         for i in range(1, source + 1):
             for j in range(1, dest + 1):
                 line += ("x" + STD.format(i, k, j))
@@ -137,15 +132,16 @@ def writeBinaryConstraints(file, source, transit, dest):
 # Other writers
 #==============================================================================#
 
-def writeOthers(file, source, transit, dest):
+def writeTrailer(file, source, transit, dest):
     """ Writes all other LP information to file"""
     file.write("Bounds\n")
     writeFlowBounds(file, source, transit, dest)
-    writeSourceBounds(file, source, transit, dest)
-    writeDestBounds(file, source, transit, dest)
+    writeSourceBounds(file, source, transit)
+    writeDestBounds(file, transit, dest)
     file.write("    r >= 0\n")
     file.write("Binaries\n")
     writeBinaries(file, source, transit, dest)
+    file.write("End")
     return
 
 def writeFlowBounds(file, source, transit, dest):
@@ -158,16 +154,16 @@ def writeFlowBounds(file, source, transit, dest):
     file.write(line)
     return
 
-def writeSourceBounds(file, source, transit, dest):
+def writeSourceBounds(file, source, transit):
     """ Writes the source -> transit capacity bounds to given file"""
     line = ""
-    for i in range(1, dest + 1):
+    for i in range(1, source + 1):
         for k in range(1, transit + 1):
             line += ("    yS{}T{} >= 0\n".format(i, k)) 
     file.write(line)
     return
 
-def writeDestBounds(file, source, transit, dest):
+def writeDestBounds(file, transit, dest):
     """ Writes the transit -> dest capacity bounds to given file"""
     line = ""
     for j in range(1, dest + 1):

@@ -1,8 +1,8 @@
 Minimize
     r
 Subject to
-    r1: xS1T1D1 + xS1T1D2 + xS1T1D3 + xS1T1D4 + xS2T1D1 + xS2T1D2 + xS2T1D3 + xS2T1D4 + xS3T1D1 + xS3T1D2 + xS3T1D3 + xS3T1D4 - r <= 0
-    r2: xS1T2D1 + xS1T2D2 + xS1T2D3 + xS1T2D4 + xS2T2D1 + xS2T2D2 + xS2T2D3 + xS2T2D4 + xS3T2D1 + xS3T2D2 + xS3T2D3 + xS3T2D4 - r <= 0
+    rT1: xS1T1D1 + xS1T1D2 + xS1T1D3 + xS1T1D4 + xS2T1D1 + xS2T1D2 + xS2T1D3 + xS2T1D4 + xS3T1D1 + xS3T1D2 + xS3T1D3 + xS3T1D4 - r <= 0
+    rT2: xS1T2D1 + xS1T2D2 + xS1T2D3 + xS1T2D4 + xS2T2D1 + xS2T2D2 + xS2T2D3 + xS2T2D4 + xS3T2D1 + xS3T2D2 + xS3T2D3 + xS3T2D4 - r <= 0
     hS1D1: xS1T1D1 + xS1T2D1 = 2
     hS1D2: xS1T1D2 + xS1T2D2 = 3
     hS1D3: xS1T1D3 + xS1T2D3 = 4
@@ -96,8 +96,6 @@ Bounds
     yS2T2 >= 0
     yS3T1 >= 0
     yS3T2 >= 0
-    yS4T1 >= 0
-    yS4T2 >= 0
     yT1D1 >= 0
     yT2D1 >= 0
     yT1D2 >= 0
