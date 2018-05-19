@@ -158,7 +158,7 @@ def writeSourceBounds(file, source, transit, dest):
     line = ""
     for i in range(1, dest + 1):
         for k in range(1, transit + 1):
-            line += ("    cS{}T{} >= 0\n".format(i, k)) 
+            line += ("    yS{}T{} >= 0\n".format(i, k)) 
     file.write(line)
     return
 
@@ -166,7 +166,7 @@ def writeDestBounds(file, source, transit, dest):
     line = ""
     for j in range(1, dest + 1):
         for k in range(1, transit + 1):
-            line += ("    dT{}D{} >= 0\n".format(k, j))
+            line += ("    yT{}D{} >= 0\n".format(k, j))
     file.write(line)
     return
 
