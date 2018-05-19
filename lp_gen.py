@@ -192,9 +192,15 @@ def writeBinaries(file, source, transit, dest):
 
 if (__name__ == "__main__"):
     
+    ## Appendix generation
+    f = open("appendix.lp", 'w')
+    source, transit, dest = 3, 2, 4
+    writeAll(f, source, transit, dest)
+    f.close()
     
-    for y in range(3, 8):
-        f = open("out%s.lp" %y, 'w')
-        source, transit, dest = 7, y, 7
-        writeAll(f, source, transit, dest)
-        f.close()
+    ##generic lp generation
+    #for y in range(3, 8):
+        #f = open("out%s.lp" %y, 'w')
+        #source, transit, dest = 7, y, 7
+        #writeAll(f, source, transit, dest)
+        #f.close()
