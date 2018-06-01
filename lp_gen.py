@@ -34,24 +34,38 @@ def writeHeader(file):
 
 def writeConstraints(file, source, transit, dest):
     """ Writes all constraints to the given file"""
+    writeMinimiseObjectiveFormula(file, source, transit)
     writeLoadBalancingConstraints(file, source, transit, dest)
     writeDemandVolConstraints(file, source, transit, dest)
     writeDemandFlowConstraints(file, source, transit, dest)
     writeSourceCapacityConstraints(file, source, transit, dest)
     writeDestCapacityConstraints(file, source, transit, dest)
     writeBinaryConstraints(file, source, transit, dest)
-
-def writeLoadBalancingConstraints(file, source, transit, dest):
-    """ Writes the load balancing constraints to the given file.
-        Sum of all path flows through a transit node <= r 
+    
+def writeMinimiseObjectiveFormula(file, source, transit):
+    """ Writes the minimisation of r objective constraints to the given file.
+        Sum of all capacities through a transit node - r <= 0 
         This auxilliary variable r is what we are minimising. """
     line = ""
     for k in range(1, transit + 1):
-        line += "    rT{}: ".format(k)
+        line += "    r{}: ".format(k)
+        for i in range(1, source + 1):
+            line += ("yS{}T{}".format(i, k))     
+            if (i == source): line += (" - r <= 0\n")
+            else: line += (" + ")
+    file.write(line)
+    return    
+
+def writeLoadBalancingConstraints(file, source, transit, dest):
+    """ Writes the load balancing constraints to the given file.
+        Sum of all path flows through a transit node - load = 0. """
+    line = ""
+    for k in range(1, transit + 1):
+        line += "    load{}: ".format(k)
         for i in range(1, source + 1):
             for j in range(1, dest + 1):
                 line += ("x" + STD.format(i, k, j))
-                if (i == source and j == dest): line += (" - r <= 0\n")
+                if (i == source and j == dest): line += (" - lT{} = 0\n".format(k))
                 else: line += (" + ")
     file.write(line)
     return
@@ -188,15 +202,15 @@ def writeBinaries(file, source, transit, dest):
 
 if (__name__ == "__main__"):
     
-    ## Appendix generation
-    f = open("appendix.lp", 'w')
-    source, transit, dest = 3, 2, 4
-    writeAll(f, source, transit, dest)
-    f.close()
+    ### Appendix generation
+    #f = open("appendix.lp", 'w')
+    #source, transit, dest = 3, 2, 4
+    #writeAll(f, source, transit, dest)
+    #f.close()
     
-    ##generic lp generation
-    #for y in range(3, 8):
-        #f = open("out%s.lp" %y, 'w')
-        #source, transit, dest = 7, y, 7
-        #writeAll(f, source, transit, dest)
-        #f.close()
+    #generic lp generation
+    for y in range(3, 8):
+        f = open("out%s.lp" %y, 'w')
+        source, transit, dest = 7, y, 7
+        writeAll(f, source, transit, dest)
+        f.close()
